@@ -46,7 +46,7 @@ describe('app routes', () => {
     });
 
     it('gets all beers on GET', async() => {
-        const beers = await Beer.create ([
+        const beers = await Beer.create([
             {
                 'brand': 'miller',
                 'name': 'lite',
@@ -88,7 +88,8 @@ describe('app routes', () => {
                         abv: beer.abv,
                         volume: beer.volume,
                         agedYears: beer.agedYears,
-                        __v: beer.__v
+                        bottle: beer.bottle,
+                        __v: 0
                     });
                 });
             });
