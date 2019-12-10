@@ -45,5 +45,80 @@ describe('app routes', () => {
             });
     });
 
-    
+    it('gets all beers on GET', async() => {
+        const beers = await Beer.create ([
+            {
+                'brand': 'miller',
+                'name': 'lite',
+                'brewType': 'lager',
+                'abv': 4.6,
+                'volume': '12 oz',
+                'agedYears': 0.5,
+                'bottle': false
+            },
+            {
+                'brand': 'coors',
+                'name': 'banquet',
+                'brewType': 'lager',
+                'abv': 4.7,
+                'volume': '16 oz',
+                'agedYears': 0.5,
+                'bottle': false
+            },
+            {
+                'brand': 'deschutes',
+                'name': 'fresh squeezed',
+                'brewType': 'ipa',
+                'abv': 6.4,
+                'volume': '12 oz',
+                'agedYears': 1,
+                'bottle': true
+            }
+        ]);
+
+        return request(app)
+            .get('/beer')
+            .then(res => {
+                beers.forEach(beer => {
+                    expect(res.body).toContainEqual({
+                        _id: beer._id.toString(),
+                        brand: beer.brand,
+                        name: beer.name,
+                        brewType: beer.brewType,
+                        abv: beer.abv,
+                        volume: beer.volume,
+                        agedYears: beer.agedYears,
+                        __v: beer.__v
+                    });
+                });
+            });
+    });
+
+    it('gets a note by id on GET', async() => {
+        const beer = await Beer.create({
+            brand: 'deschutes',
+            name: 'fresh squeezed',
+            brewType: 'ipa',
+            abv: 6.4,
+            volume: '12 oz',
+            agedYears: 1,
+            bottle: true
+        });
+
+        return request(app)
+            .get(`/beer/${beer._id}`)
+            .then(res => {
+                expect(res.body).toEqual({
+                    _id: beer._id.toString(),
+                    brand: beer.brand,
+                    name: beer.name,
+                    brewType: beer.brewType,
+                    abv: beer.abv,
+                    volume: beer.volume,
+                    agedYears: beer.agedYears,
+                    bottle: beer.bottle,
+                    __v: beer.__v
+                });
+            });
+    });
 });
