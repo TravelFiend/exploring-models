@@ -6,7 +6,7 @@
     "scripts": {
         "lint": "eslint '**/*.js'",
         "test": "jest --verbose",
-        "test:watch": "npm run test -- --watch --coverage"
+        "test:watch": "npm run test -- --watchAll --coverage"
     },
     "repository": {
         "type": "git",

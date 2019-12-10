@@ -94,7 +94,7 @@ describe('app routes', () => {
             });
     });
 
-    it('gets a note by id on GET', async() => {
+    it('gets a beer by id on GET', async() => {
         const beer = await Beer.create({
             brand: 'deschutes',
             name: 'fresh squeezed',
@@ -121,4 +121,44 @@ describe('app routes', () => {
                 });
             });
     });
+
+    it('updates a beer with PUT', async() => {
+        const beer = await Beer.create({
+            brand: 'deschutes',
+            name: 'fresh squeezed',
+            brewType: 'ipa',
+            abv: 6.4,
+            volume: '12 oz',
+            agedYears: 1,
+            bottle: true
+        });
+
+        return request(app)
+            .put(`/beer/${beer._id}`)
+            .send({
+                _id: beer._id,
+                brand: 'miller',
+                name: 'lite',
+                brewType: 'lager',
+                abv: 4.6,
+                volume: '12 oz',
+                agedYears: 0.5,
+                bottle: false,
+                __v: beer.__v
+            })
+            .then(res => {
+                expect(res.body).toEqual({
+                    _id: beer._id.toString(),
+                    brand: 'miller',
+                    name: 'lite',
+                    brewType: 'lager',
+                    abv: 4.6,
+                    volume: '12 oz',
+                    agedYears: 0.5,
+                    bottle: false,
+                    __v: beer.__v
+                });
+            });
+    });
+
 });
