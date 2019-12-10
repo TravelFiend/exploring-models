@@ -161,4 +161,31 @@ describe('app routes', () => {
             });
     });
 
+    it('can delete a beer with DELETE', async() => {
+        const beer = await Beer.create({
+            brand: 'miller',
+            name: 'lite',
+            brewType: 'lager',
+            abv: 4.6,
+            volume: '12 oz',
+            agedYears: 0.5,
+            bottle: false,
+        });
+
+        return request(app)
+            .delete(`/beer/${beer._id}`)
+            .then(res => {
+                expect(res.body).toEqual({
+                    _id: beer._id.toString(),
+                    brand: beer.brand,
+                    name: beer.name,
+                    brewType: beer.brewType,
+                    abv: beer.abv,
+                    volume: beer.volume,
+                    agedYears: beer.agedYears,
+                    bottle: beer.bottle,
+                    __v: beer.__v
+                });
+            });
+    });
 });
